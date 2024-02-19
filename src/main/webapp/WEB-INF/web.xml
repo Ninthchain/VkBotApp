@@ -5,17 +5,25 @@
         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
         metadata-complete="false"
         version="6.0">
+    <filter>
+        <filter-name>continuation</filter-name>
+        <filter-class>org.eclipse.jetty.continuation.ContinuationFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+
     <servlet>
         <servlet-name>home-servlet</servlet-name>
-        <servlet-class>com.dev.vkbot.HomeServlet</servlet-class>
+        <servlet-class>com.dev.vkbot.HomePageServlet</servlet-class>
+        <async-supported>true</async-supported>
     </servlet>
     <servlet>
         <servlet-name>root-redirect-servlet</servlet-name>
-        <servlet-class>com.dev.vkbot.RootRedirectServlet</servlet-class>
+        <servlet-class>com.dev.website.RootRedirectServlet</servlet-class>
+        <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>home-servlet</servlet-name>
-        <url-pattern>/home/*</url-pattern>
+        <url-pattern>/homepage/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>root-redirect-servlet</servlet-name>
