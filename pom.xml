@@ -29,13 +29,27 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>12.0.6</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.mortbay.jetty/servlet-api -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.0.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>12.0.0.beta3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>9.4.46.v20220331</version>
         </dependency>
 
     </dependencies>
@@ -44,7 +58,19 @@
         <finalName>vkbotapp</finalName>
         <pluginManagement>
             <plugins>
-
+                <plugin>
+                    <groupId>de.juplo</groupId>
+                    <artifactId>hibernate-maven-plugin</artifactId>
+                    <version>2.1.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>drop</goal>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.eclipse.jetty.ee10</groupId>
                     <artifactId>jetty-ee10-maven-plugin</artifactId>
@@ -52,7 +78,7 @@
                     <configuration>
                         <scan>10</scan>
                         <webApp>
-                            <contextPath>/app</contextPath>
+                            <contextPath>/</contextPath>
                         </webApp>
                     </configuration>
                 </plugin>

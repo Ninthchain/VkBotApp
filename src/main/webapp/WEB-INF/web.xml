@@ -9,9 +9,16 @@
         <servlet-name>home-servlet</servlet-name>
         <servlet-class>com.dev.vkbot.HomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>root-redirect-servlet</servlet-name>
+        <servlet-class>com.dev.vkbot.RootServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>home-servlet</servlet-name>
         <url-pattern>/home/*</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>root-redirect-servlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 </web-app>
