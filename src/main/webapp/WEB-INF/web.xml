@@ -11,7 +11,7 @@
     </servlet>
     <servlet>
         <servlet-name>root-redirect-servlet</servlet-name>
-        <servlet-class>com.dev.vkbot.RootServlet</servlet-class>
+        <servlet-class>com.dev.vkbot.RootRedirectServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>home-servlet</servlet-name>
