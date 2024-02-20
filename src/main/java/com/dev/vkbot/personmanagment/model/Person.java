@@ -1,4 +1,4 @@
-package com.dev.vkbot.enitites;
+package com.dev.vkbot.personmanagment.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,16 +6,24 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Person")
+@Table(name = "persons")
 public class Person {
 		@Id
 		long id;
-		@Column(name = "role")
-		String role;
 		@Column(name = "vkId")
 		long vkId;
 		@Column(name = "isVerified")
 		boolean isVerified;
+		
+		public Person() {
+		
+		}
+		
+		public Person(long id, long vkId, boolean isVerified) {
+				this.setId(id);
+				this.setVkId(vkId);
+				this.setIsVerified(isVerified);
+		}
 		
 		public long getVkId() {
 				return vkId;
