@@ -1,4 +1,4 @@
-package com.dev.vkbot.personmanagment.model;
+package com.dev.vkbot.database.personmanagment.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
