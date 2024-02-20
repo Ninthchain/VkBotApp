@@ -1,7 +1,7 @@
 package com.dev.vkbot.database.personmanagment.dao;
 
 import com.dev.vkbot.database.personmanagment.model.Person;
-import com.dev.vkbot.database.personmanagment.utils.HibernateUtil;
+import com.dev.vkbot.database.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

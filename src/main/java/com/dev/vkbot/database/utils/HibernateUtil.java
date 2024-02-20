@@ -1,4 +1,4 @@
-package com.dev.vkbot.database.personmanagment.utils;
+package com.dev.vkbot.database.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
