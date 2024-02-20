@@ -1,4 +1,4 @@
-package com.dev.vkbot;
+package com.dev.website;
 
 
 import jakarta.servlet.AsyncContext;

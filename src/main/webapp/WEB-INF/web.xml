@@ -13,7 +13,7 @@
 
     <servlet>
         <servlet-name>home-servlet</servlet-name>
-        <servlet-class>com.dev.vkbot.HomePageServlet</servlet-class>
+        <servlet-class>com.dev.website.HomePageServlet</servlet-class>
         <async-supported>true</async-supported>
     </servlet>
     <servlet>
