@@ -5,28 +5,45 @@
         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
         metadata-complete="false"
         version="6.0">
-    <filter>
-        <filter-name>continuation</filter-name>
-        <filter-class>org.eclipse.jetty.continuation.ContinuationFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
 
     <servlet>
         <servlet-name>home-servlet</servlet-name>
-        <servlet-class>com.dev.vkbot.HomePageServlet</servlet-class>
-        <async-supported>true</async-supported>
-    </servlet>
-    <servlet>
-        <servlet-name>root-redirect-servlet</servlet-name>
-        <servlet-class>com.dev.website.RootRedirectServlet</servlet-class>
-        <async-supported>true</async-supported>
+        <servlet-class>com.dev.website.HomePageServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>home-servlet</servlet-name>
         <url-pattern>/homepage/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>root-redirect-servlet</servlet-name>
+        <servlet-class>com.dev.website.RootRedirectServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>root-redirect-servlet</servlet-name>
         <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>error-page-servlet</servlet-name>
+        <servlet-class>com.dev.website.ErrorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>error-page-servlet</servlet-name>
+        <url-pattern>/error-page/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>not-found</servlet-name>
+        <servlet-class>com.dev.website.NotFoundServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>not-found</servlet-name>
+        <url-pattern>/not-found/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>person</servlet-name>
+        <servlet-class>com.dev.vkbot.database.webcontrollers.PersonServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>person</servlet-name>
+        <url-pattern>/pidoras/*</url-pattern>
     </servlet-mapping>
 </web-app>
