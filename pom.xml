@@ -89,6 +89,7 @@
                         <hibernateConfig>resources/hibernate.cfg.xml</hibernateConfig>
                     </configuration>
                 </plugin>
+                po
                 <plugin>
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-maven-plugin</artifactId>
