@@ -86,9 +86,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <hibernateConfig>resources/hibernate/hibernate.cfg.xml</hibernateConfig>
-                        <username>admin</username>
-                        <password>localhost</password>
+                        <hibernateConfig>resources/hibernate.cfg.xml</hibernateConfig>
                     </configuration>
                 </plugin>
                 <plugin>
