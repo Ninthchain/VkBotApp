@@ -1,7 +1,7 @@
 package com.dev.vkbot.longpoll;
 
-import com.dev.vkbot.database.vkgroup.VkGroup;
-import com.dev.vkbot.database.vkgroup.VkGroupDao;
+import com.dev.vkbot.database.dao.VkGroupDao;
+import com.dev.vkbot.database.model.VkGroup;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;

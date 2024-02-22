@@ -1,4 +1,4 @@
-package com.dev.vkbot.database.vkgroup;
+package com.dev.vkbot.database.model;
 
 import jakarta.persistence.Id;
 
