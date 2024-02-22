@@ -1,40 +1,73 @@
 package com.dev.vkbot.database.webcontrollers;
 
+import com.dev.vkbot.database.personmanagment.dao.PersonDao;
 import com.dev.vkbot.database.personmanagment.model.Person;
-import com.dev.vkbot.database.utils.HibernateUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hibernate.Session;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "pidoras")
+@WebServlet()
 public class PersonServlet extends HttpServlet {
+		private PersonDao personDao;
+		
 		@Override
-		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				Session session = HibernateUtil.GetSessionFactory().getCurrentSession();
-				session.beginTransaction();
-				
+		public void init() throws ServletException {
+				super.init();
+				personDao = new PersonDao();
 		}
 		
 		@Override
-		protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-				if (req.getParameter("vkId") == null || req.getParameter("isVerified") == null) {
-						resp.setStatus(400);
-						resp.getWriter().write("ХУй тебе, параметры впиши");
+		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				
+				if (request.getParameter("all") != null) {
+						for (Person person : personDao.getAllPersons()) {
+								response.getWriter().println(person.getId());
+								response.getWriter().println(person.getVkId());
+								response.getWriter().println(person.getIsVerified());
+						}
+						return;
+						
+				}
+				
+				Person person = null;
+				if (request.getParameter("id") == null) {
+						if (this.isParametersValid(request, response)) {
+								person = personDao.GetPerson(Long.parseLong(request.getParameter("vkId")), true);
+						}
+				} else {
+						person = personDao.GetPerson(Long.parseLong(request.getParameter("id")));
+				}
+				
+				if (person == null)
+						return;
+				
+				response.getWriter().println(person.getId());
+				response.getWriter().println(person.getVkId());
+				response.getWriter().println(person.getIsVerified());
+		}
+		
+		@Override
+		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				if (this.isParametersValid(request, response)) {
+						
 						return;
 				}
 				
-				Session session = HibernateUtil.GetSessionFactory().getCurrentSession();
-				
-				session.beginTransaction();
 				Person person = new Person();
-				person.setVkId(Long.parseLong(req.getParameter("vkId")));
-				person.setIsVerified(Boolean.parseBoolean(req.getParameter("isVerified")));
-				session.persist(person);
-				session.getTransaction().commit();
+				person.setVkId(Long.parseLong(request.getParameter("vkId")));
+				person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
+				this.personDao.PersistPerson(person);
+		}
+		
+		private boolean isParametersValid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+				if (!(request.getParameter("vkId") == null || request.getParameter("isVerified") == null)) {
+						return false;
+				}
+				response.setStatus(400);
+				return true;
 		}
 }
