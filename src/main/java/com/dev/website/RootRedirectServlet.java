@@ -12,22 +12,23 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/"})
 public class RootRedirectServlet extends HttpServlet {
-		@Override
-		protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-				ServletContext servletContext = request.getServletContext();
-				String servletUriPath = request.getParameter("servlet-uri");
-				if (servletUriPath == null) {
-						servletUriPath = "/home";
-				} else if (servletContext.getServletRegistration(servletUriPath) == null) {
-						servletUriPath = "/not-found";
-				}
-				RequestDispatcher dispatcher = request.getRequestDispatcher(servletUriPath);
-				
-				try {
-						dispatcher.forward(request, response);
-				} catch (ServletException | IOException e) {
-						
-						throw new RuntimeException(e);
-				}
-		}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Huy");
+        ServletContext servletContext = request.getServletContext();
+        String servletUriPath = request.getParameter("servlet-uri");
+        if (servletUriPath == null) {
+            servletUriPath = "/home";
+        } else if (servletContext.getServletRegistration(servletUriPath) == null) {
+            servletUriPath = "/not-found";
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher(servletUriPath);
+
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException | IOException e) {
+
+            throw new RuntimeException(e);
+        }
+    }
 }

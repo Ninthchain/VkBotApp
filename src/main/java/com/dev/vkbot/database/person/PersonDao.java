@@ -1,7 +1,6 @@
-package com.dev.vkbot.database.person.dao;
+package com.dev.vkbot.database.person;
 
 import com.dev.vkbot.database.Dao;
-import com.dev.vkbot.database.person.model.Person;
 import com.dev.vkbot.database.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -72,6 +71,7 @@ public class PersonDao implements Dao<Person> {
 
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
+            this.criteriaBuilder = session.getCriteriaBuilder();
             JpaCriteriaQuery<Person> cr = criteriaBuilder.createQuery(Person.class);
             JpaRoot<Person> root = cr.from(Person.class);
             JpaCriteriaQuery<Person> items = cr.select(root).where(root.get(columnName).in(value));

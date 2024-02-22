@@ -103,6 +103,7 @@
                     </executions>
                     <configuration>
                         <hibernateConfig>resources/hibernate.cfg.xml</hibernateConfig>
+
                     </configuration>
                 </plugin>
                 <plugin>
