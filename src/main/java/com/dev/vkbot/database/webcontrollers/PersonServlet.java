@@ -1,7 +1,7 @@
 package com.dev.vkbot.database.webcontrollers;
 
-import com.dev.vkbot.database.personmanagment.dao.PersonDao;
-import com.dev.vkbot.database.personmanagment.model.Person;
+import com.dev.vkbot.database.person.dao.PersonDao;
+import com.dev.vkbot.database.person.model.Person;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

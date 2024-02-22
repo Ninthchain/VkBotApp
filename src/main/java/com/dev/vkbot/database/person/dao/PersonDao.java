@@ -1,6 +1,6 @@
-package com.dev.vkbot.database.personmanagment.dao;
+package com.dev.vkbot.database.person.dao;
 
-import com.dev.vkbot.database.personmanagment.model.Person;
+import com.dev.vkbot.database.person.model.Person;
 import com.dev.vkbot.database.utils.HibernateUtil;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.Session;
