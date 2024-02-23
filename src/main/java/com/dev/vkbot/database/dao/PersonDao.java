@@ -1,7 +1,8 @@
 package com.dev.vkbot.database.dao;
 
 import com.dev.vkbot.database.model.Person;
-import com.dev.vkbot.database.utils.HibernateUtil;
+import com.dev.vkbot.utils.HibernateUtil;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -9,8 +10,12 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
 
+
+
 import java.util.List;
 
+
+@ApplicationScoped
 public class PersonDao implements Dao<Person> {
     HibernateCriteriaBuilder criteriaBuilder;
 

@@ -44,7 +44,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>person</servlet-name>
-        <servlet-class>com.dev.vkbot.database.webcontrollers.PersonServlet</servlet-class>
+        <servlet-class>com.dev.vkbot.webcontrollers.PersonServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>person</servlet-name>
