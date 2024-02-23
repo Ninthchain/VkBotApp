@@ -1,7 +1,8 @@
 package com.dev.vkbot.database.webcontrollers;
 
-import com.dev.vkbot.database.person.dao.PersonDao;
-import com.dev.vkbot.database.person.model.Person;
+import com.dev.vkbot.database.dao.Dao;
+import com.dev.vkbot.database.dao.PersonDao;
+import com.dev.vkbot.database.model.Person;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet()
 public class PersonServlet extends HttpServlet {
-    private PersonDao personDao;
+    private Dao<Person> personDao;
 
     @Override
     public void init() throws ServletException {
@@ -42,20 +43,17 @@ public class PersonServlet extends HttpServlet {
             response.getWriter().println(person.getIsVerified());
             return;
         }
-        if (this.isParametersValid(request, response)) {
+        if ((request.getParameter("vkId") != null)) {
             person = personDao.getByColumnValue("vkId", Long.parseLong(request.getParameter("vkId"))).getFirst();
             response.getWriter().println(person.getId());
             response.getWriter().println(person.getVkId());
             response.getWriter().println(person.getIsVerified());
         }
-
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (this.isParametersValid(request, response)) {
-
+        if ((request.getParameter("vkId") == null || request.getParameter("isVerified") == null)) {
             return;
         }
 
@@ -65,11 +63,4 @@ public class PersonServlet extends HttpServlet {
         this.personDao.Persist(person);
     }
 
-    private boolean isParametersValid(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!(request.getParameter("vkId") == null || request.getParameter("isVerified") == null)) {
-            return false;
-        }
-        response.setStatus(400);
-        return true;
-    }
 }

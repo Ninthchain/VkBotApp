@@ -7,6 +7,10 @@
         version="6.0">
 
     <servlet>
+        <servlet-name>longpoll-servlet</servlet-name>
+        <servlet-class>com.dev.vkbot.longpoll.LongPollCallbackApiServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>home-servlet</servlet-name>
         <servlet-class>com.dev.website.HomePageServlet</servlet-class>
     </servlet>

@@ -1,7 +1,6 @@
-package com.dev.vkbot.database.person.dao;
+package com.dev.vkbot.database.dao;
 
-import com.dev.vkbot.database.Dao;
-import com.dev.vkbot.database.person.model.Person;
+import com.dev.vkbot.database.model.VkGroup;
 import com.dev.vkbot.database.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,12 +11,11 @@ import org.hibernate.query.criteria.JpaRoot;
 
 import java.util.List;
 
-public class PersonDao implements Dao<Person> {
+public class VkGroupDao implements Dao<VkGroup> {
     HibernateCriteriaBuilder criteriaBuilder;
 
-
     @Override
-    public void Persist(Person entityObject) {
+    public void Persist(VkGroup entityObject) {
         Transaction transaction = null;
         try {
             Session session = HibernateUtil.GetSessionFactory().openSession();
@@ -33,7 +31,7 @@ public class PersonDao implements Dao<Person> {
     }
 
     @Override
-    public void Merge(Person entityObject) {
+    public void Merge(VkGroup entityObject) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -50,32 +48,32 @@ public class PersonDao implements Dao<Person> {
     }
 
     @Override
-    public <IdType extends Number> Person Get(IdType id) {
-
-        Person person = null;
+    public <IdType extends Number> VkGroup Get(IdType id) {
+        VkGroup value = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            person = session.get(Person.class, id);
+            value = session.get(VkGroup.class, id);
             transaction.commit();
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-        return person;
+        return value;
     }
 
     @Override
-    public <ColumnValueType> List<Person> getByColumnValue(String columnName, ColumnValueType value) {
+    public <ColumnValueType> List<VkGroup> getByColumnValue(String columnName, ColumnValueType value) {
 
-        List<Person> values = null;
+        List<VkGroup> values = null;
 
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            JpaCriteriaQuery<Person> cr = criteriaBuilder.createQuery(Person.class);
-            JpaRoot<Person> root = cr.from(Person.class);
-            JpaCriteriaQuery<Person> items = cr.select(root).where(root.get(columnName).in(value));
-            Query<Person> valuesQuery = session.createQuery(items);
+            this.criteriaBuilder = session.getCriteriaBuilder();
+            JpaCriteriaQuery<VkGroup> cr = criteriaBuilder.createQuery(VkGroup.class);
+            JpaRoot<VkGroup> root = cr.from(VkGroup.class);
+            JpaCriteriaQuery<VkGroup> items = cr.select(root).where(root.get(columnName).in(value));
+            Query<VkGroup> valuesQuery = session.createQuery(items);
             values = valuesQuery.getResultList();
             transaction.commit();
         } catch (Exception e) {
@@ -86,18 +84,19 @@ public class PersonDao implements Dao<Person> {
     }
 
     @Override
-    public List<Person> getAll() {
-        List<Person> values = null;
+    public List<VkGroup> getAll() {
+
+        List<VkGroup> values = null;
 
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
 
             Transaction transaction = session.beginTransaction();
 
             this.criteriaBuilder = session.getCriteriaBuilder();
-            JpaCriteriaQuery<Person> cr = criteriaBuilder.createQuery(Person.class);
-            JpaRoot<Person> root = cr.from(Person.class);
-            JpaCriteriaQuery<Person> selectQuery = cr.select(root);
-            Query<Person> allQuery = session.createQuery(selectQuery);
+            JpaCriteriaQuery<VkGroup> cr = criteriaBuilder.createQuery(VkGroup.class);
+            JpaRoot<VkGroup> root = cr.from(VkGroup.class);
+            JpaCriteriaQuery<VkGroup> selectQuery = cr.select(root);
+            Query<VkGroup> allQuery = session.createQuery(selectQuery);
             values = allQuery.getResultList();
 
             transaction.commit();
@@ -107,6 +106,4 @@ public class PersonDao implements Dao<Person> {
         }
         return values;
     }
-
-
 }
