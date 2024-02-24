@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/db/person"})
 public class PersonServlet extends HttpServlet {
@@ -25,44 +26,67 @@ public class PersonServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setContentType("application/json");
         if (request.getParameter("all") != null) {
-            for (Person person : personDao.getAll()) {
-                response.getWriter().println(person.getId());
-                response.getWriter().println(person.getVkId());
-                response.getWriter().println(person.getIsVerified());
+            List<Person> persons = personDao.getAll();
+            for (Person person : persons) {
+                response.getWriter().print(this.getPrettyJsonOutputString(person));
+                if(person != persons.getLast())
+                    response.getWriter().print(',');
             }
             return;
         }
 
-        Person person = null;
+        Person person;
         if (request.getParameter("id") != null) {
-            person = personDao.Get(Long.parseLong(request.getParameter("id")));
+            person = personDao.getEntityById(Long.parseLong(request.getParameter("id")));
             if (person == null) return;
-
-            response.getWriter().println(person.getId());
-            response.getWriter().println(person.getVkId());
-            response.getWriter().println(person.getIsVerified());
+            
+            response.getWriter().println(this.getPrettyJsonOutputString(person));
             return;
         }
         if ((request.getParameter("vkId") != null)) {
-            person = personDao.getByColumnValue("vkId", Long.parseLong(request.getParameter("vkId"))).getFirst();
-            response.getWriter().println(person.getId());
-            response.getWriter().println(person.getVkId());
-            response.getWriter().println(person.getIsVerified());
+            person = personDao.getEntitiesByColumnValue("vkId", Long.parseLong(request.getParameter("vkId"))).getFirst();
+            response.getWriter().print(this.getPrettyJsonOutputString(person));
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if ((request.getParameter("vkId") == null || request.getParameter("isVerified") == null)) {
+        response.setContentType("application/json");
+        if ((request.getParameter("vkId") == null)) {
             return;
         }
 
         Person person = new Person();
-        person.setVkId(Long.parseLong(request.getParameter("vkId")));
-        person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
-        this.personDao.Persist(person);
-    }
+        
+        long vkId = Long.parseLong(request.getParameter("vkId"));
+        person.setVkId(vkId);
 
+        if(request.getParameter("isVerified") != null)
+            person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
+        if(request.getParameter("token") != null)
+            person.setToken(request.getParameter("token"));
+        
+        if (request.getParameter("method-merge") != null) {
+            
+            this.personDao.merge(person);
+            response.getWriter().printf("merge done {id: %n, userId: %n, token: %s}", person.getId(), person.getVkId(), person.getToken());
+        }
+        else if (request.getParameter("method-persist") != null){
+            person.setIsVerified(false);
+            this.personDao.persist(person);
+            response.getWriter().printf("persist done {id: %n, userId: %n, token: %s}", person.getId(), person.getVkId(), person.getToken());
+        }
+
+        response.setStatus(200);
+    }
+    
+    private String getPrettyJsonOutputString(Person person) {
+        return String.format("{\"id\": %d, \"userId\": %d, \"isVerified\": %b, \"token\": \"%s\"}",
+             person.getId(),
+             person.getVkId(),
+             person.getIsVerified(),
+             person.getToken());
+    }
 }

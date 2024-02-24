@@ -3,14 +3,16 @@ package com.dev.bot.database.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "vkGroups", schema = "vkapp")
+@Table(name = "VkGroup", schema = "vkapp")
 public class VkGroup {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private long id;
     
-    @Column(name = "groupId")
-    private long groupId;
+    @Column(name = "vkId")
+    private long vkId;
 
     @Column(name = "accessToken")
     private String accessToken;
@@ -21,7 +23,7 @@ public class VkGroup {
 
     public VkGroup(long id, long groupId, String accessToken) {
         this.setId(id);
-        this.setGroupId(groupId);
+        this.setVkId(groupId);
         this.setAccessToken(accessToken);
     }
 
@@ -33,12 +35,12 @@ public class VkGroup {
         this.accessToken = accessToken;
     }
 
-    public long getGroupId() {
-        return groupId;
+    public long getVkId() {
+        return vkId;
     }
 
-    public void setGroupId(long groupId) {
-        this.groupId = groupId;
+    public void setVkId(long vkId) {
+        this.vkId = vkId;
     }
 
     public long getId() {

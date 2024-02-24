@@ -1,12 +1,10 @@
 package com.dev.bot.database.model;
 
 
-
-import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "person", schema = "vkapp")
+@Table(name = "Person", schema = "vkapp")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

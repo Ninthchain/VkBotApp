@@ -2,12 +2,13 @@ package com.dev.bot.database.dao;
 
 import com.dev.bot.database.model.VkGroup;
 import com.dev.bot.utils.HibernateUtil;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaCriteriaQuery;
-import org.hibernate.query.criteria.JpaRoot;
+
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class VkGroupDao implements Dao<VkGroup> {
     HibernateCriteriaBuilder criteriaBuilder;
 
     @Override
-    public void Persist(VkGroup entityObject) {
+    public void persist(VkGroup entityObject) {
         Transaction transaction = null;
         try {
             Session session = HibernateUtil.GetSessionFactory().openSession();
@@ -31,7 +32,7 @@ public class VkGroupDao implements Dao<VkGroup> {
     }
 
     @Override
-    public void Merge(VkGroup entityObject) {
+    public void merge(VkGroup entityObject) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -48,7 +49,7 @@ public class VkGroupDao implements Dao<VkGroup> {
     }
 
     @Override
-    public <IdType extends Number> VkGroup Get(IdType id) {
+    public <IdType extends Number> VkGroup getEntityById(IdType id) {
         VkGroup value = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -63,18 +64,14 @@ public class VkGroupDao implements Dao<VkGroup> {
     }
 
     @Override
-    public <ColumnValueType> List<VkGroup> getByColumnValue(String columnName, ColumnValueType value) {
+    public <ColumnValueType> List<VkGroup> getEntitiesByColumnValue(String columnName, ColumnValueType value) {
 
         List<VkGroup> values = null;
 
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            this.criteriaBuilder = session.getCriteriaBuilder();
-            JpaCriteriaQuery<VkGroup> cr = criteriaBuilder.createQuery(VkGroup.class);
-            JpaRoot<VkGroup> root = cr.from(VkGroup.class);
-            JpaCriteriaQuery<VkGroup> items = cr.select(root).where(root.get(columnName).in(value));
-            Query<VkGroup> valuesQuery = session.createQuery(items);
-            values = valuesQuery.getResultList();
+            Query<VkGroup> groupQuery = session.createQuery(String.format("from vkgroup where %s like %s", columnName, value.toString()));
+            values = groupQuery.getResultList();
             transaction.commit();
         } catch (Exception e) {
 
@@ -91,17 +88,12 @@ public class VkGroupDao implements Dao<VkGroup> {
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
 
             Transaction transaction = session.beginTransaction();
-
-            this.criteriaBuilder = session.getCriteriaBuilder();
-            JpaCriteriaQuery<VkGroup> cr = criteriaBuilder.createQuery(VkGroup.class);
-            JpaRoot<VkGroup> root = cr.from(VkGroup.class);
-            JpaCriteriaQuery<VkGroup> selectQuery = cr.select(root);
-            Query<VkGroup> allQuery = session.createQuery(selectQuery);
+            
+            Query<VkGroup> allQuery = session.createQuery("from vkgroup");
             values = allQuery.getResultList();
 
             transaction.commit();
         } catch (Exception e) {
-
             e.printStackTrace();
         }
         return values;

@@ -1,13 +1,12 @@
 package com.dev.bot.database.dao;
 
 import com.dev.bot.database.model.Person;
+import com.dev.bot.database.model.VkGroup;
 import com.dev.bot.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaCriteriaQuery;
-import org.hibernate.query.criteria.JpaRoot;
 
 
 
@@ -19,7 +18,7 @@ public class PersonDao implements Dao<Person> {
 
 
     @Override
-    public void Persist(Person entityObject) {
+    public void persist(Person entityObject) {
         Transaction transaction = null;
         try {
             Session session = HibernateUtil.GetSessionFactory().openSession();
@@ -27,32 +26,25 @@ public class PersonDao implements Dao<Person> {
             session.persist(entityObject);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            
             e.printStackTrace();
         }
     }
 
     @Override
-    public void Merge(Person entityObject) {
+    public void merge(Person entityObject) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.merge(entityObject);
             transaction.commit();
         } catch (Exception e) {
-
-            if (transaction != null) {
-
-                transaction.rollback();
-            }
             e.printStackTrace();
         }
     }
 
     @Override
-    public <IdType extends Number> Person Get(IdType id) {
+    public <IdType extends Number> Person getEntityById(IdType id) {
 
         Person person = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
@@ -68,18 +60,15 @@ public class PersonDao implements Dao<Person> {
     }
 
     @Override
-    public <ColumnValueType> List<Person> getByColumnValue(String columnName, ColumnValueType value) {
+    public <ColumnValueType> List<Person> getEntitiesByColumnValue(String columnName, ColumnValueType value) {
 
         List<Person> values = null;
 
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            this.criteriaBuilder = session.getCriteriaBuilder();
-            JpaCriteriaQuery<Person> cr = criteriaBuilder.createQuery(Person.class);
-            JpaRoot<Person> root = cr.from(Person.class);
-            JpaCriteriaQuery<Person> items = cr.select(root).where(root.get(columnName).in(value));
-            Query<Person> valuesQuery = session.createQuery(items);
-            values = valuesQuery.getResultList();
+            
+            Query<Person> groupQuery = session.createQuery(String.format("from Person where %s = %s", columnName, value.toString()), Person.class);
+            values = groupQuery.getResultList();
             transaction.commit();
         } catch (Exception e) {
 
@@ -95,12 +84,8 @@ public class PersonDao implements Dao<Person> {
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
 
             Transaction transaction = session.beginTransaction();
-
-            this.criteriaBuilder = session.getCriteriaBuilder();
-            JpaCriteriaQuery<Person> cr = criteriaBuilder.createQuery(Person.class);
-            JpaRoot<Person> root = cr.from(Person.class);
-            JpaCriteriaQuery<Person> selectQuery = cr.select(root);
-            Query<Person> allQuery = session.createQuery(selectQuery);
+            
+            Query<Person> allQuery = session.createQuery("from Person", Person.class);
             values = allQuery.getResultList();
 
             transaction.commit();
