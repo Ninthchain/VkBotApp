@@ -1,4 +1,4 @@
-package com.dev.vkbot.database.dao;
+package com.dev.bot.database.dao;
 
 import java.util.List;
 

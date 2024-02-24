@@ -1,17 +1,14 @@
-package com.dev.vkbot.database.model;
+package com.dev.bot.database.model;
 
-import jakarta.persistence.Id;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "vkGroups")
+@Table(name = "vkGroups", schema = "vkapp")
 public class VkGroup {
+    
     @Id
     private long id;
-
+    
     @Column(name = "groupId")
     private long groupId;
 

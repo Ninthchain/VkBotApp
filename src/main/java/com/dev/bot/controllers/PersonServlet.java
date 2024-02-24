@@ -1,10 +1,10 @@
-package com.dev.vkbot.webcontrollers;
+package com.dev.bot.controllers;
 
 
-import com.dev.vkbot.database.dao.Dao;
+import com.dev.bot.database.dao.Dao;
 
-import com.dev.vkbot.database.dao.PersonDao;
-import com.dev.vkbot.database.model.Person;
+import com.dev.bot.database.dao.PersonDao;
+import com.dev.bot.database.model.Person;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

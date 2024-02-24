@@ -1,4 +1,4 @@
-package com.dev.vkbot.webcontrollers;
+package com.dev.bot.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;

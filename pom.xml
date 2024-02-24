@@ -116,7 +116,9 @@
                     </executions>
                     <configuration>
                         <hibernateConfig>resources/hibernate.cfg.xml</hibernateConfig>
+                        <mappings>
 
+                        </mappings>
                     </configuration>
                 </plugin>
                 <plugin>

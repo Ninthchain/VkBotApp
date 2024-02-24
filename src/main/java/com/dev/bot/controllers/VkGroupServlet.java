@@ -1,7 +1,7 @@
-package com.dev.vkbot.webcontrollers;
+package com.dev.bot.controllers;
 
-import com.dev.vkbot.database.dao.Dao;
-import com.dev.vkbot.database.model.VkGroup;
+import com.dev.bot.database.dao.Dao;
+import com.dev.bot.database.model.VkGroup;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +13,12 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/db/vk-group"})
 public class VkGroupServlet extends HttpServlet {
 		private Dao<VkGroup> vkGroupDao;
+		
+		@Override
+		public void init() throws ServletException {
+				super.init();
+				
+		}
 		
 		@Override
 		public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

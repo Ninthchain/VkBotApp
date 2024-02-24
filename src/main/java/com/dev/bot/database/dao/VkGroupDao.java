@@ -1,7 +1,7 @@
-package com.dev.vkbot.database.dao;
+package com.dev.bot.database.dao;
 
-import com.dev.vkbot.database.model.VkGroup;
-import com.dev.vkbot.utils.HibernateUtil;
+import com.dev.bot.database.model.VkGroup;
+import com.dev.bot.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
