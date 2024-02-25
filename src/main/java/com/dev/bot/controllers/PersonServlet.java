@@ -55,9 +55,10 @@ public class PersonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         if ((request.getParameter("vkId") == null)) {
+            response.setStatus(400);
             return;
         }
-
+        
         Person person = new Person();
         
         long vkId = Long.parseLong(request.getParameter("vkId"));
@@ -67,18 +68,32 @@ public class PersonServlet extends HttpServlet {
             person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
         if(request.getParameter("token") != null)
             person.setToken(request.getParameter("token"));
-        
-        if (request.getParameter("method-merge") != null) {
-            
-            this.personDao.merge(person);
-            response.getWriter().printf("merge done {id: %n, userId: %n, token: %s}", person.getId(), person.getVkId(), person.getToken());
-        }
-        else if (request.getParameter("method-persist") != null){
-            person.setIsVerified(false);
-            this.personDao.persist(person);
-            response.getWriter().printf("persist done {id: %n, userId: %n, token: %s}", person.getId(), person.getVkId(), person.getToken());
-        }
+        person.setIsVerified(false);
+        this.personDao.persist(person);
+        response.getWriter().printf("persist done {id: %n, userId: %n, token: %s}", person.getId(), person.getVkId(), person.getToken());
 
+
+        response.setStatus(200);
+    }
+    
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("vkId") == null) {
+            response.setStatus(400);
+            return;
+        }
+        Person person = new Person();
+        
+        long vkId = Long.parseLong(request.getParameter("vkId"));
+        person.setVkId(vkId);
+        
+        if(request.getParameter("isVerified") != null)
+            person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
+        if(request.getParameter("token") != null)
+            person.setToken(request.getParameter("token"));
+        person.setIsVerified(false);
+        
+        this.personDao.merge(person);
         response.setStatus(200);
     }
     
