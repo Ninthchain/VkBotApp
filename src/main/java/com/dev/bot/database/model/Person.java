@@ -18,15 +18,19 @@ public class Person {
     @Column(name = "token")
     private String token;
     
+    @Column(name = "status")
+    private short status;
+    
     public Person() {
 
     }
 
-    public Person(long id, long vkId, boolean isVerified, String token) {
+    public Person(long id, long vkId, boolean isVerified, String token, short status) {
         this.setId(id);
         this.setVkId(vkId);
         this.setIsVerified(isVerified);
         this.setToken(token);
+        this.setStatus(status);
     }
 
     public long getId() {
@@ -61,5 +65,13 @@ public class Person {
     
     public void setToken(String token) {
         this.token = token;
+    }
+    
+    public short getStatus() {
+        return status;
+    }
+    
+    public void setStatus(short status) {
+        this.status = status;
     }
 }

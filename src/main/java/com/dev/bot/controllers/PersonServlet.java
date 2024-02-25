@@ -50,11 +50,22 @@ public class PersonServlet extends HttpServlet {
             response.getWriter().print(this.getPrettyJsonOutputString(person));
         }
     }
-
+    
+    /**
+     *
+     * @param request the {@link HttpServletRequest} object that contains the request the client made of the servlet
+     *
+     * @param response the {@link HttpServletResponse} object that contains the response the servlet returns to the client
+     * @value req param: vkId - not null
+     * @value req param: status - not null
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
-        if ((request.getParameter("vkId") == null)) {
+        
+        if ((request.getParameter("vkId") == null) || request.getParameter("status") == null) {
             response.setStatus(400);
             return;
         }
@@ -76,22 +87,38 @@ public class PersonServlet extends HttpServlet {
         response.setStatus(200);
     }
     
+    /**
+     *
+     * @param request the {@link HttpServletRequest} object that contains the request the client made of the servlet
+     *
+     * @param response the {@link HttpServletResponse} object that contains the response the servlet returns to the client
+     * @value req param: vkId - not null
+     * @value req param: status - not null. 0 - unknown user. 1 - sending age, 2 - verifying, 3 - verified
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("vkId") == null) {
+        if (request.getParameter("vkId") == null || request.getParameter("status") == null) {
             response.setStatus(400);
             return;
         }
-        Person person = new Person();
-        
         long vkId = Long.parseLong(request.getParameter("vkId"));
+        short status = Short.parseShort(request.getParameter("status"));
+        
+        Person person = new Person();
+        // not null values
         person.setVkId(vkId);
+        person.setStatus(status);
+        
+        // by default, it is false
+        person.setIsVerified(false);
         
         if(request.getParameter("isVerified") != null)
             person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
         if(request.getParameter("token") != null)
             person.setToken(request.getParameter("token"));
-        person.setIsVerified(false);
+        
         
         this.personDao.merge(person);
         response.setStatus(200);
