@@ -5,6 +5,7 @@ import com.dev.bot.database.dao.Dao;
 
 import com.dev.bot.database.dao.PersonDao;
 import com.dev.bot.database.model.Person;
+import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,11 +30,8 @@ public class PersonServlet extends HttpServlet {
         response.setContentType("application/json");
         if (request.getParameter("all") != null) {
             List<Person> persons = personDao.getAll();
-            for (Person person : persons) {
-                response.getWriter().print(this.getPrettyJsonOutputString(person));
-                if(person != persons.getLast())
-                    response.getWriter().print(',');
-            }
+            response.getWriter().print(new Gson().toJson(persons));
+            response.getWriter().flush();
             return;
         }
 
@@ -64,7 +62,7 @@ public class PersonServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
-        
+        response.setCharacterEncoding("UTF-8");
         if ((request.getParameter("vkId") == null)) {
             response.setStatus(400);
             return;
@@ -100,6 +98,9 @@ public class PersonServlet extends HttpServlet {
      */
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
         if (request.getParameter("vkId") == null || request.getParameter("status") == null) {
             response.setStatus(400);
             return;
@@ -126,11 +127,4 @@ public class PersonServlet extends HttpServlet {
         response.setStatus(200);
     }
     
-    private String getPrettyJsonOutputString(Person person) {
-        return String.format("{\"id\": %d, \"userId\": %d, \"isVerified\": %b, \"token\": \"%s\"}",
-             person.getId(),
-             person.getVkId(),
-             person.getIsVerified(),
-             person.getToken());
-    }
 }
