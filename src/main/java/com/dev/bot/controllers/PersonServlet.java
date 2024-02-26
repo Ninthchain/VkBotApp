@@ -56,8 +56,8 @@ public class PersonServlet extends HttpServlet {
      * @param request the {@link HttpServletRequest} object that contains the request the client made of the servlet
      *
      * @param response the {@link HttpServletResponse} object that contains the response the servlet returns to the client
-     * @value req param: vkId - not null
-     * @value req param: status - not null
+     * @apiNote  vkId must be not null
+     * @value status must be not null
      * @throws ServletException
      * @throws IOException
      */
@@ -65,7 +65,7 @@ public class PersonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         
-        if ((request.getParameter("vkId") == null) || request.getParameter("status") == null) {
+        if ((request.getParameter("vkId") == null)) {
             response.setStatus(400);
             return;
         }
@@ -74,6 +74,7 @@ public class PersonServlet extends HttpServlet {
         
         long vkId = Long.parseLong(request.getParameter("vkId"));
         person.setVkId(vkId);
+        person.setStatus((short) 0);
 
         if(request.getParameter("isVerified") != null)
             person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
@@ -107,6 +108,7 @@ public class PersonServlet extends HttpServlet {
         short status = Short.parseShort(request.getParameter("status"));
         
         Person person = new Person();
+        person.setId(personDao.getEntitiesByColumnValue("vkId", vkId).getFirst().getId());
         // not null values
         person.setVkId(vkId);
         person.setStatus(status);

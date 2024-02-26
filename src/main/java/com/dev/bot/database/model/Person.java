@@ -1,14 +1,15 @@
 package com.dev.bot.database.model;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 
 @Entity
 @Table(name = "Person", schema = "vkapp")
 public class Person {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private long id;
     @Column(name = "vkId")
     private long vkId;

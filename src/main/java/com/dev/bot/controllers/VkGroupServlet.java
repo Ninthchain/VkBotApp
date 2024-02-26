@@ -2,6 +2,7 @@ package com.dev.bot.controllers;
 
 import com.dev.bot.database.dao.Dao;
 import com.dev.bot.database.dao.VkGroupDao;
+import com.dev.bot.database.model.Person;
 import com.dev.bot.database.model.VkGroup;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,6 +31,7 @@ public class VkGroupServlet extends HttpServlet {
 		
 		@Override
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				resp.setContentType("application/json");
 				VkGroup vkGroup = null;
 				
 				if(req.getParameter("id") != null) {
@@ -43,15 +45,14 @@ public class VkGroupServlet extends HttpServlet {
 						resp.setStatus(400);
 						return;
 				}
-				List<VkGroup> groups = vkGroupDao.getEntitiesByColumnValue("vkId", Long.parseLong(req.getParameter("vkId")));
-				for (VkGroup group : groups) {
-					if(group.getVkId() != Long.parseLong(req.getParameter("vkId"))) {
-							continue;
-					}
-					vkGroup = group;
-					
-				}
-				req.setAttribute("token", vkGroup.getAccessToken());
+				VkGroup group = vkGroupDao.getEntitiesByColumnValue("vkId", Long.parseLong(req.getParameter("vkId"))).getFirst();
+				resp.getWriter().println(getPrettyJsonOutputString(group));
 				resp.setStatus(200);
+		}
+		private String getPrettyJsonOutputString(VkGroup group) {
+				return String.format("{\"id\": %d, groupId:%d ,\"token\": \"%s\"}",
+					group.getId(),
+					group.getVkId(),
+					group.getAccessToken());
 		}
 }

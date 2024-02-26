@@ -30,20 +30,22 @@ public class VkGroupDao implements Dao<VkGroup> {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * @param entityObject the id must be not null
+     */
     @Override
     public void merge(VkGroup entityObject) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+            session.flush();
+            session.clear();
+            session.detach(this.getEntityById(entityObject.getId()));
             session.merge(entityObject);
             transaction.commit();
         } catch (Exception e) {
 
-            if (transaction != null) {
-
-                transaction.rollback();
-            }
             e.printStackTrace();
         }
     }
@@ -70,7 +72,7 @@ public class VkGroupDao implements Dao<VkGroup> {
 
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            Query<VkGroup> groupQuery = session.createQuery(String.format("from vkgroup where %s like %s", columnName, value.toString()));
+            Query<VkGroup> groupQuery = session.createQuery(String.format("from VkGroup where %s like %s", columnName, value.toString()), VkGroup.class);
             values = groupQuery.getResultList();
             transaction.commit();
         } catch (Exception e) {
@@ -89,7 +91,7 @@ public class VkGroupDao implements Dao<VkGroup> {
 
             Transaction transaction = session.beginTransaction();
             
-            Query<VkGroup> allQuery = session.createQuery("from vkgroup");
+            Query<VkGroup> allQuery = session.createQuery("from vkgroup", VkGroup.class);
             values = allQuery.getResultList();
 
             transaction.commit();

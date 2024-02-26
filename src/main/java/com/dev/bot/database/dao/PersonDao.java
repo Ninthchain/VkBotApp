@@ -15,16 +15,17 @@ import java.util.List;
 
 public class PersonDao implements Dao<Person> {
     HibernateCriteriaBuilder criteriaBuilder;
-
+    
 
     @Override
     public void persist(Person entityObject) {
         Transaction transaction = null;
-        try {
-            Session session = HibernateUtil.GetSessionFactory().openSession();
+        try (Session session = HibernateUtil.GetSessionFactory().openSession()){
+            
             transaction = session.beginTransaction();
             session.persist(entityObject);
             transaction.commit();
+            
         } catch (Exception e) {
             
             e.printStackTrace();
@@ -36,6 +37,10 @@ public class PersonDao implements Dao<Person> {
         Transaction transaction = null;
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             transaction = session.beginTransaction();
+           
+            session.flush();
+            session.clear();
+            session.detach(this.getEntityById(entityObject.getId()));
             session.merge(entityObject);
             transaction.commit();
         } catch (Exception e) {
@@ -67,8 +72,8 @@ public class PersonDao implements Dao<Person> {
         try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             
-            Query<Person> groupQuery = session.createQuery(String.format("from Person where %s = %s", columnName, value.toString()), Person.class);
-            values = groupQuery.getResultList();
+            Query<Person> personQuery = session.createQuery(String.format("from Person where %s = %s", columnName, value.toString()), Person.class);
+            values = personQuery.getResultList();
             transaction.commit();
         } catch (Exception e) {
 
