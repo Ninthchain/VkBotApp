@@ -39,12 +39,13 @@ public class VkGroupServlet extends HttpServlet {
 				
 				if(request.getParameter("id") != null) {
 						vkGroup = vkGroupDao.getEntityById(Long.parseLong(request.getParameter("id")));
+						response.getWriter().print(new Gson().toJson(vkGroup));
 						response.setStatus(200);
-						
 						return;
 				}
 				if(request.getParameter("vkId") == null) {
 						response.getWriter().println("Invalid request");
+						
 //						response.setStatus(400);
 //						return;
 				}

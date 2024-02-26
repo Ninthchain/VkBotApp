@@ -1,7 +1,6 @@
 package com.dev.bot.database.dao;
 
 import com.dev.bot.database.model.Person;
-import com.dev.bot.database.model.VkGroup;
 import com.dev.bot.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -19,49 +18,17 @@ public class PersonDao implements Dao<Person> {
 
     @Override
     public void persist(Person entityObject) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.GetSessionFactory().openSession()){
-            
-            transaction = session.beginTransaction();
-            session.persist(entityObject);
-            transaction.commit();
-            
-        } catch (Exception e) {
-            
-            e.printStackTrace();
-        }
+    
     }
 
     @Override
     public void merge(Person entityObject) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-           
-            session.flush();
-            session.clear();
-            session.detach(this.getEntityById(entityObject.getId()));
-            session.merge(entityObject);
-            transaction.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
-    public <IdType extends Number> Person getEntityById(IdType id) {
-
-        Person person = null;
-        try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
-            person = session.get(Person.class, id);
-            transaction.commit();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-        return person;
+    public <IdType> Person getEntityById(IdType id) {
+    
     }
 
     @Override
@@ -73,6 +40,7 @@ public class PersonDao implements Dao<Person> {
             Transaction transaction = session.beginTransaction();
             
             Query<Person> personQuery = session.createQuery(String.format("from Person where %s = %s", columnName, value.toString()), Person.class);
+            
             values = personQuery.getResultList();
             transaction.commit();
         } catch (Exception e) {

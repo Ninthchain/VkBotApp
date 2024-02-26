@@ -11,8 +11,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/db/person"})
@@ -40,12 +42,19 @@ public class PersonServlet extends HttpServlet {
             person = personDao.getEntityById(Long.parseLong(request.getParameter("id")));
             if (person == null) return;
             
-            response.getWriter().println(this.getPrettyJsonOutputString(person));
+            response.getWriter().print(new Gson().toJson(person));
             return;
         }
         if ((request.getParameter("vkId") != null)) {
-            person = personDao.getEntitiesByColumnValue("vkId", Long.parseLong(request.getParameter("vkId"))).getFirst();
-            response.getWriter().print(this.getPrettyJsonOutputString(person));
+            try {
+                
+                person = personDao.getEntitiesByColumnValue("vkId", Long.parseLong(request.getParameter("vkId"))).getFirst();
+                response.getWriter().print(new Gson().toJson(person));
+                response.getWriter().flush();
+            }
+            catch (Exception e) {
+                response.getWriter().print("null");
+            }
         }
     }
     
@@ -101,7 +110,7 @@ public class PersonServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         
-        if (request.getParameter("vkId") == null || request.getParameter("status") == null) {
+        if (request.getParameter("vkId") == null) {
             response.setStatus(400);
             return;
         }
@@ -110,15 +119,19 @@ public class PersonServlet extends HttpServlet {
         
         Person person = new Person();
         person.setId(personDao.getEntitiesByColumnValue("vkId", vkId).getFirst().getId());
-        // not null values
+        
+        // must be not null
         person.setVkId(vkId);
-        person.setStatus(status);
         
         // by default, it is false
         person.setIsVerified(false);
         
+        if(request.getParameter("status") != null)
+            person.setStatus(status);
+        
         if(request.getParameter("isVerified") != null)
             person.setIsVerified(Boolean.parseBoolean(request.getParameter("isVerified")));
+        
         if(request.getParameter("token") != null)
             person.setToken(request.getParameter("token"));
         
