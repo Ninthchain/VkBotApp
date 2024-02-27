@@ -9,10 +9,10 @@ public class SellPoint {
 		@GeneratedValue(strategy =  GenerationType.IDENTITY)
 		@Column(name = "id", unique = true, nullable = false)
 		private long id;
-		@Column(name = "address")
+		@Column(name = "address", length = 200)
 		private String address;
 		
-		@Column(name = "city")
+		@Column(name = "city", length = 60)
 		private String city;
 		
 		@Column(name = "sellerId")

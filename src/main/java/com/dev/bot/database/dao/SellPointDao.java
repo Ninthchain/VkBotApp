@@ -62,7 +62,7 @@ public class SellPointDao implements Dao<SellPoint> {
 				try (Session session = HibernateUtil.GetSessionFactory().openSession()) {
 						Transaction transaction = session.beginTransaction();
 						
-						Query<SellPoint> personQuery = session.createQuery(String.format("from Person where %s = %s", columnName, value.toString()), SellPoint.class);
+						Query<SellPoint> personQuery = session.createQuery(String.format("from SellPoint where %s = %s", columnName, value.toString()), SellPoint.class);
 						
 						values = personQuery.getResultList();
 						transaction.commit();
@@ -81,7 +81,7 @@ public class SellPointDao implements Dao<SellPoint> {
 						
 						Transaction transaction = session.beginTransaction();
 						
-						Query<SellPoint> allQuery = session.createQuery("from Person", SellPoint.class);
+						Query<SellPoint> allQuery = session.createQuery("from SellPoint", SellPoint.class);
 						values = allQuery.getResultList();
 						
 						transaction.commit();
